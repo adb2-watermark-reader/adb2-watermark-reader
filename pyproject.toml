@@ -10,6 +10,7 @@ opencv-python = "^4.5.5"
 matplotlib = "^3.5.1"
 notebook = "^6.4.11"
 statsmodels = "^0.13.2"
+pydub = "^0.25.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -156,18 +156,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
-name = "dpcpp-cpp-rt"
-version = "2022.1.0"
-description = "Intel® C++ Compiler Classic"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-intel-cmplr-lic-rt = "2022.1.0"
-intel-openmp = "2022.1.0"
-
-[[package]]
 name = "entrypoints"
 version = "0.4"
 description = "Discover and load entry points from installed packages."
@@ -230,62 +218,6 @@ zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
-
-[[package]]
-name = "intel-cmplr-lic-rt"
-version = "2022.1.0"
-description = "Intel® oneAPI Runtime COMMON LICENSING"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "intel-fortran-rt"
-version = "2022.1.0"
-description = "Intel® Fortran Compiler Classic"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-intel-cmplr-lic-rt = "2022.1.0"
-intel-openmp = "2022.1.0"
-
-[[package]]
-name = "intel-numpy"
-version = "1.21.4"
-description = "NumPy is the fundamental package for array computing with Python."
-category = "main"
-optional = false
-python-versions = ">=3.7,<3.11"
-
-[package.dependencies]
-dpcpp_cpp_rt = "*"
-mkl = "*"
-mkl-service = "*"
-tbb4py = "*"
-
-[[package]]
-name = "intel-openmp"
-version = "2022.1.0"
-description = "Intel® OpenMP* Runtime Library"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "intel-scipy"
-version = "1.7.3"
-description = "SciPy: Scientific Library for Python"
-category = "main"
-optional = false
-python-versions = ">=3.7,<3.11"
-
-[package.dependencies]
-dpcpp_cpp_rt = "*"
-intel_fortran_rt = "*"
-intel-numpy = "1.21.4"
-mkl = "*"
 
 [[package]]
 name = "ipykernel"
@@ -496,30 +428,6 @@ description = "The fastest markdown parser in pure Python"
 category = "main"
 optional = false
 python-versions = "*"
-
-[[package]]
-name = "mkl"
-version = "2022.1.0"
-description = "Intel® oneAPI Math Kernel Library"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-intel-openmp = ">=2022.0.0,<2023.0.0"
-tbb = ">=2021.0.0,<2022.0.0"
-
-[[package]]
-name = "mkl-service"
-version = "2.4.0"
-description = "MKL Support Functions"
-category = "main"
-optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-
-[package.dependencies]
-mkl = "*"
-six = "*"
 
 [[package]]
 name = "nbclient"
@@ -818,6 +726,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "pydub"
+version = "0.25.1"
+description = "Manipulate audio with an simple and easy high level interface"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pygments"
 version = "2.12.0"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -984,25 +900,6 @@ develop = ["cython (>=0.29.26)"]
 docs = ["sphinx", "nbconvert", "jupyter-client", "ipykernel", "matplotlib", "nbformat", "numpydoc", "pandas-datareader"]
 
 [[package]]
-name = "tbb"
-version = "2021.5.2"
-description = "Intel® oneAPI Threading Building Blocks"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "tbb4py"
-version = "2021.5.2"
-description = "Intel® oneAPI Threading Building Blocks"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-tbb = "2021.5.2"
-
-[[package]]
 name = "terminado"
 version = "0.13.3"
 description = "Tornado websocket backend for the Xterm.js Javascript terminal emulator library."
@@ -1091,7 +988,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "40be36e5978643b42204e93eec445ffe68f7f78302c6c6dcd44b7a9e8fcf0d72"
+content-hash = "9d7efe2885e54916c3644c302ff7026fb097be60d5806522ba3bbd55ee567ec7"
 
 [metadata.files]
 appnope = [
@@ -1233,11 +1130,6 @@ defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
 ]
-dpcpp-cpp-rt = [
-    {file = "dpcpp_cpp_rt-2022.1.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:206bd7b735a1005c61ea2fa5ed77c4b37d778c89bc790a7555cbeba0a600d30c"},
-    {file = "dpcpp_cpp_rt-2022.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:d813af2e2395795c1489053ec640b2e3918c57d9e61fb822a3491d91b925bad9"},
-    {file = "dpcpp_cpp_rt-2022.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:ebf2f4bee43cd977f161a035be1c8556cb10de88a0d333c76bd18cd31cf5a641"},
-]
 entrypoints = [
     {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
     {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
@@ -1257,43 +1149,6 @@ fonttools = [
 importlib-resources = [
     {file = "importlib_resources-5.7.1-py3-none-any.whl", hash = "sha256:e447dc01619b1e951286f3929be820029d48c75eb25d265c28b92a16548212b8"},
     {file = "importlib_resources-5.7.1.tar.gz", hash = "sha256:b6062987dfc51f0fcb809187cffbd60f35df7acb4589091f154214af6d0d49d3"},
-]
-intel-cmplr-lic-rt = [
-    {file = "intel_cmplr_lic_rt-2022.1.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:e483e326f447bd66775ad39a9df16618f65d5a1c7ac3da4ddd5e90a44c656ccf"},
-    {file = "intel_cmplr_lic_rt-2022.1.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:06da0370ccd399431c0001cdc648b9501fae8e6dfa538cdecf6a389fb6385848"},
-    {file = "intel_cmplr_lic_rt-2022.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:e6f023533cf118b001070e1c5decdea9eaba8a0ff8f51eb14f6f2be7711eeace"},
-    {file = "intel_cmplr_lic_rt-2022.1.0-py2.py3-none-win32.whl", hash = "sha256:a86c5209b53c14742f00dffe5eead2b702d73cafe4d18c01ef7d493ae18da8a0"},
-    {file = "intel_cmplr_lic_rt-2022.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:06e7704ba97ec0f295c92564e2237cbe8927496902a2109c9958a8f0f5b95408"},
-]
-intel-fortran-rt = [
-    {file = "intel_fortran_rt-2022.1.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:3a65faf8956d8575d4d9bbbfe34db2f6979b0ebfc0d9dbea702fa9aa8e7daf1b"},
-    {file = "intel_fortran_rt-2022.1.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:f19501b43d20abbe66271fb06bcbb9476a5b086bc98c53abe9d615137679c2ec"},
-    {file = "intel_fortran_rt-2022.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:300b1d7b222ce730043daa90daf284cce37bc16c8bb4f3ab93f5ed57382ad0ba"},
-    {file = "intel_fortran_rt-2022.1.0-py2.py3-none-win32.whl", hash = "sha256:6397336dd8deaf769e211bf3d75931c4ec7f7da206144d1ddfa3a88c3fbc13c6"},
-    {file = "intel_fortran_rt-2022.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:e73d075dd5a92de124371d6ecba8200b6ae7847719c13f5d0d69460685c95361"},
-]
-intel-numpy = [
-    {file = "intel_numpy-1.21.4-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:3ebbde35c16a6cdb7112264fb43fbcff9825c607120e5a6b53118b4aa523e6b2"},
-    {file = "intel_numpy-1.21.4-cp37-cp37m-win_amd64.whl", hash = "sha256:5ba87fb7eee5414de5ab8d5b58591bd14c9f037b1ba3eb7eee3a03a9593e29c9"},
-    {file = "intel_numpy-1.21.4-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:f636bd396bc51673958052684bc1e6591439bd87f26e1eb6c74b10d71fb04440"},
-    {file = "intel_numpy-1.21.4-cp38-cp38-win_amd64.whl", hash = "sha256:1b7160c2fae8460bbfc21d2776a7f3b0cf7c346af95a6fb51b4db5ee74bc2362"},
-    {file = "intel_numpy-1.21.4-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:30457fd17574eec1e0c5fb9fe3eb9d340a2025727b1c0117d88e22b0e4b1d3a8"},
-    {file = "intel_numpy-1.21.4-cp39-cp39-win_amd64.whl", hash = "sha256:a658594515a50eaa342a821adebae30392996d62b3814f9e977b547d4c951ed7"},
-]
-intel-openmp = [
-    {file = "intel_openmp-2022.1.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:b48c3050d15a16efbdd64439b52ad3f46e0f9b1d324a7499ba07fc1259f2548a"},
-    {file = "intel_openmp-2022.1.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:282ad02ef131accace562a74d8f3b9251d1a19cdfceaeb4ad7de2f49913200a3"},
-    {file = "intel_openmp-2022.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:ec90c6f433f970c0c9dae74db2b973e3731159c2f3ce6c89ba347898a38f643d"},
-    {file = "intel_openmp-2022.1.0-py2.py3-none-win32.whl", hash = "sha256:9e62d22fc182333bbfbcfcc795532e31ee1e99cd65baf5ef80895decb308be96"},
-    {file = "intel_openmp-2022.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:1b0b92d0ca5599686b5024dd6824e47a6756cbe0253ac7782c0ba84ec18f150c"},
-]
-intel-scipy = [
-    {file = "intel_scipy-1.7.3-cp37-cp37m-manylinux_2_17_x86_64.whl", hash = "sha256:3c1678cd8167dea7fe4c10103c9fac8c413f800eeed9d40f2bf411f2e4725d34"},
-    {file = "intel_scipy-1.7.3-cp37-cp37m-win_amd64.whl", hash = "sha256:a91644815943b3fd7658a72ea19bf49a3f0b3d0e2d8ea810fe2ff9d18d92b7c5"},
-    {file = "intel_scipy-1.7.3-cp38-cp38-manylinux_2_17_x86_64.whl", hash = "sha256:7ab3257a32e2e65e0611122cc21167ae910d61296a3efdd819829bc3a3e51e4a"},
-    {file = "intel_scipy-1.7.3-cp38-cp38-win_amd64.whl", hash = "sha256:79a60f424225eba50350eb4da312b9fdd5eb5b448306c7374ca3a776d26fa6cf"},
-    {file = "intel_scipy-1.7.3-cp39-cp39-manylinux_2_17_x86_64.whl", hash = "sha256:7c2d8f1fcff5a37ef94c727963a48e5a2d98a3eecfb34eb80387156b616116ca"},
-    {file = "intel_scipy-1.7.3-cp39-cp39-win_amd64.whl", hash = "sha256:cfcee7831efbffecc745747f5d5cae4b1c9cce3dca848148dc091dbc46362723"},
 ]
 ipykernel = [
     {file = "ipykernel-6.13.0-py3-none-any.whl", hash = "sha256:2b0987af43c0d4b62cecb13c592755f599f96f29aafe36c01731aaa96df30d39"},
@@ -1462,30 +1317,6 @@ matplotlib-inline = [
 mistune = [
     {file = "mistune-0.8.4-py2.py3-none-any.whl", hash = "sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4"},
     {file = "mistune-0.8.4.tar.gz", hash = "sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e"},
-]
-mkl = [
-    {file = "mkl-2022.1.0-py2.py3-none-macosx_10_15_x86_64.macosx_11_0_x86_64.whl", hash = "sha256:53fe9e29c2aa78f525958aaefac94f1a94ff5b00dc659d74ce61b59615d8ef64"},
-    {file = "mkl-2022.1.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:abdbc791e0f7db09b21fa53c9e4c0f32630d3a07f755f35a60a765451af058df"},
-    {file = "mkl-2022.1.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:a2c6b0978bc2370635c2b9c1ba2bc70ae9756379c9cdd211092010ad832468aa"},
-    {file = "mkl-2022.1.0-py2.py3-none-win32.whl", hash = "sha256:4bbff0bedb3f6f9a259ec8785cba57ac9b23497aa068dca0f748e2d5f60fc281"},
-    {file = "mkl-2022.1.0-py2.py3-none-win_amd64.whl", hash = "sha256:13e90792800a114f213a405220444a85bbe7eb59a7a273487562da980c668470"},
-]
-mkl-service = [
-    {file = "mkl_service-2.4.0-0-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:a26a4823bd1445c9065ef7bb1b5cec04a2663055d79e753969f876bc27aa41b2"},
-    {file = "mkl_service-2.4.0-0-cp37-cp37m-win_amd64.whl", hash = "sha256:40f919ff5f967e04879ef846c7650165c59e6bc11569adf966082ddecebbd513"},
-    {file = "mkl_service-2.4.0-0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:b181b9954fe8a1ccbbfba6e583fe29bc051d360748de210f5a4a689b684947ad"},
-    {file = "mkl_service-2.4.0-0-cp38-cp38-win_amd64.whl", hash = "sha256:36ec8c2286f14bbae0dba17c561eef26e52dc93ded2e1bde70de18157f52a99d"},
-    {file = "mkl_service-2.4.0-11-cp37-cp37m-macosx_10_10_x86_64.whl", hash = "sha256:3b59c88b6583ad49a92ee048fe55e7da4724a2d821bb0523042d7e6fafdf1d4e"},
-    {file = "mkl_service-2.4.0-11-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:c247d9c7afdbbd29dff6c6c1a27639001c5c8e3b3f869531f9f249ec0804b3d0"},
-    {file = "mkl_service-2.4.0-11-cp37-cp37m-win_amd64.whl", hash = "sha256:04b8df9954571cb258a053fa0236e1eff6bcd8bb869d5fc4e309fd3620fb90c3"},
-    {file = "mkl_service-2.4.0-11-cp38-cp38-macosx_10_10_x86_64.whl", hash = "sha256:da2a51708706ff3a672d18619135ad4998ce58cd04937413953fe1cc2e8a7bc7"},
-    {file = "mkl_service-2.4.0-11-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:e93022a7167db1b02770f15dca4b027ad1d3b691bae23679ebd8c022dd2e9b52"},
-    {file = "mkl_service-2.4.0-11-cp38-cp38-win_amd64.whl", hash = "sha256:b336bea128903d4a6ea2d98b18b1d61ca393861ddb17c5e5ad480ecf5b4458ef"},
-    {file = "mkl_service-2.4.0-11-cp39-cp39-macosx_10_10_x86_64.whl", hash = "sha256:95d70b4e78a5b3d4e337ac92d5599dd855ab098de04c6bd085a45bb8e111e6f4"},
-    {file = "mkl_service-2.4.0-11-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:28d8c7b604461bfdd381e7dd023d9e9a3419bf6d57207162b66994daf6d368c3"},
-    {file = "mkl_service-2.4.0-11-cp39-cp39-win_amd64.whl", hash = "sha256:cc008abd50696bf3fb9291c8b26a1e81e80b3d52d88bee5141810dd776da3e50"},
-    {file = "mkl_service-2.4.0-6-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:9476b71f253fe05225a5a7c94c4d6a63743135cbf6f36cdc81af003aa253ffbb"},
-    {file = "mkl_service-2.4.0-6-cp39-cp39-win_amd64.whl", hash = "sha256:9868a6cf369e866ecfc9e0e3fb290a1bd54bc1e3f5ff2338176395da8da5fdaf"},
 ]
 nbclient = [
     {file = "nbclient-0.6.2-py3-none-any.whl", hash = "sha256:0d575e1e2622ce433b0bb793fec7d8a77aacc2fd21831aec9be3bd48aaee126b"},
@@ -1683,6 +1514,10 @@ pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
+pydub = [
+    {file = "pydub-0.25.1-py2.py3-none-any.whl", hash = "sha256:65617e33033874b59d87db603aa1ed450633288aefead953b30bded59cb599a6"},
+    {file = "pydub-0.25.1.tar.gz", hash = "sha256:980a33ce9949cab2a569606b65674d748ecbca4f0796887fd6f46173a7b0d30f"},
+]
 pygments = [
     {file = "Pygments-2.12.0-py3-none-any.whl", hash = "sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519"},
     {file = "Pygments-2.12.0.tar.gz", hash = "sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"},
@@ -1863,17 +1698,6 @@ statsmodels = [
     {file = "statsmodels-0.13.2-cp39-cp39-win32.whl", hash = "sha256:461c82ab2265fa8457b96afc23ef3ca19f42eb070436e0241b57e58a38863901"},
     {file = "statsmodels-0.13.2-cp39-cp39-win_amd64.whl", hash = "sha256:39daab5a8a9332c8ea83d6464d065080c9ba65f236daf6a64aa18f64ef776fad"},
     {file = "statsmodels-0.13.2.tar.gz", hash = "sha256:77dc292c9939c036a476f1770f9d08976b05437daa229928da73231147cde7d4"},
-]
-tbb = [
-    {file = "tbb-2021.5.2-py3-none-win32.whl", hash = "sha256:6673a1102b755f0a3a396288eae63272a578dd4cc4ba0ec65d360f4f5984f1fc"},
-    {file = "tbb-2021.5.2-py3-none-win_amd64.whl", hash = "sha256:0e1e8e02c322b46b373cbc06fcfa88790d00e438115d0b9f2bfc6fc3d87badd4"},
-]
-tbb4py = [
-    {file = "tbb4py-2021.5.2-py35-none-win_amd64.whl", hash = "sha256:046449f5dbf7a75a25996d3ed1788454c72a8603c05121e015e2dd16f766c039"},
-    {file = "tbb4py-2021.5.2-py36-none-win_amd64.whl", hash = "sha256:6dd45885e1c3015581967d7ec8ded391d49d49e87404b1814c96eab84e360243"},
-    {file = "tbb4py-2021.5.2-py37-none-win_amd64.whl", hash = "sha256:042ed09fe740de654c5162c718c589f6aba48793ddc3f7bcc5fef605ff7cc886"},
-    {file = "tbb4py-2021.5.2-py38-none-win_amd64.whl", hash = "sha256:4697118fbff4769f7242b42c2d15e4f63ebedf5f8684772e22b626635bc7696c"},
-    {file = "tbb4py-2021.5.2-py39-none-win_amd64.whl", hash = "sha256:e5a433816854b827d5a10b2e19d14b574f272d58173663874dc4e35352159524"},
 ]
 terminado = [
     {file = "terminado-0.13.3-py3-none-any.whl", hash = "sha256:874d4ea3183536c1782d13c7c91342ef0cf4e5ee1d53633029cbc972c8760bd8"},
