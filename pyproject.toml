@@ -9,8 +9,10 @@ python = ">=3.8,<3.11"
 opencv-python = "^4.5.5"
 matplotlib = "^3.5.1"
 notebook = "^6.4.11"
-statsmodels = "^0.13.2"
 pydub = "^0.25.1"
+pandas = "^1.4.2"
+scipy = "^1.8.0"
+numpy = "^1.22.3"
 
 [tool.poetry.dev-dependencies]
 
