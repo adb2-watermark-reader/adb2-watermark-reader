@@ -21,7 +21,7 @@ def disassemble_bitarray_into_components(bits:bitarray) -> dict[str: bitarray]:
     wm_message_remaining_bytes -= 4 #crc_32
     wm_message["version"] = bits[32:36]
     wm_message_bytes_start = 40
-    if (wm_message["id"] & bitarray('10000000')) == 0:
+    if (wm_message["id"] & bitarray('10000000')) == bitarray('00000000'): 
         wm_message["fragment_number"] = bits[36:38]
         wm_message["last_fragment"] = bits[38:40]
         wm_message_remaining_bytes -= 1
@@ -31,11 +31,11 @@ def disassemble_bitarray_into_components(bits:bitarray) -> dict[str: bitarray]:
         wm_message["last_fragment"] = bits[48:56]
         wm_message_remaining_bytes -= 3
         wm_message_bytes_start = 56
-    if (wm_message["fragment_number"] == wm_message["last_fragment"] and wm_message["fragment_number"] != 0):
+    if (wm_message["fragment_number"] == wm_message["last_fragment"] and wm_message["fragment_number"].any()):
         wm_message_remaining_bytes -= 4 #message_crc_32
     wm_message_bytes_end = wm_message_bytes_start + (wm_message_remaining_bytes * 8)
     wm_message["bytes"] = bits[wm_message_bytes_start: wm_message_bytes_end]
-    if (wm_message["fragment_number"] == wm_message["last_fragment"] and wm_message["fragment_number"] != 0):
+    if (wm_message["fragment_number"] == wm_message["last_fragment"] and wm_message["fragment_number"].any()):
         wm_message["message_crc_32"] = bits[wm_message_bytes_end: wm_message_bytes_end + 32]
         wm_message["crc_32"] = bits[wm_message_bytes_end + 32: wm_message_bytes_end + 64]
     else:
@@ -67,7 +67,10 @@ def number_of_different_bits(bit_array: bitarray, reference: bitarray) -> int:
     return abs(bit_array.count(True), reference.count(True))
 
 def check_crc(message: dict[str: bitarray]) -> bool:
-    return bit_util.ba2int(message["crc_32"]) == zlib.crc32(message["entire_block"])
+    if message["crc_32"].any():
+        return bit_util.ba2int(message["crc_32"]) == zlib.crc32(message["entire_block"])
+    else:
+        return False
 
 def print_to_file(messages: list):
     with open("messages.json", "w") as f:
