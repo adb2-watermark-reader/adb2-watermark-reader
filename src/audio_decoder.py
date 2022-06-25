@@ -1,34 +1,34 @@
-import bitarray.util as bit_util
+import time
+
 import numpy as np
 import pandas as pd
 from bitarray import frozenbitarray, bitarray
 
 import audio_spec_constants as consts
 from math_utils import butter_bandpass_filter
-
-samplerate = 48000
-samples_per_symbol = samplerate / consts.symbols_per_sec
-offset_frames = round(samplerate * consts.offset_sec)
+from vp1_payload import parse_payload, Payload
+from numba import njit
 
 
-def do_decoding(signal: np.ndarray):
+def decode(signal: np.ndarray, samplerate: int) -> Payload:
+    samples_per_symbol = samplerate / consts.symbols_per_sec
+
     signal = butter_bandpass_filter(signal, consts.butter_pass_lower, consts.butter_pass_higher, samplerate)
-    signal = get_autocorrelated_signal(signal)
-    starting_point = get_best_starting_point(signal)
+    signal = get_autocorrelated_signal(signal, samplerate, samples_per_symbol)
+
+    starting_point = get_best_starting_point(signal, samples_per_symbol)
 
     if starting_point is None:
-        print("no audio watermark found")
-        return
+        raise ValueError("no audio watermark found")
 
-    cell_bytes = get_cell_bytes_from_signal(signal, starting_point)
+    cell_bytes = get_cell_bytes_from_signal(signal, starting_point, samples_per_symbol)
     if not cell_bytes.hex().startswith("ae0ab9e4"):
-        print("watermark broke")
-        return
+        raise AssertionError("watermark broke")
 
     payload_bitarray, parity = get_payload_from_cell_bytes(cell_bytes)
     payload = parse_payload(payload_bitarray)
 
-    print(payload)
+    return payload
 
 
 def get_payload_from_cell_bytes(data):
@@ -46,33 +46,7 @@ def get_payload_from_cell_bytes(data):
     return unscrambled_payload, unscrambled_parity
 
 
-class Payload:
-    domain_is_long = False
-    query_flag = False
-    interval = 0
-    server_hex = ""
-    server = ""
-
-    def __str__(self):
-        return str(self.__class__) + ": " + str(self.__dict__)
-
-
-def parse_payload(bit_array: bitarray):
-    payload = Payload()
-
-    payload.domain_is_long = bool(bit_array[0])
-
-    interval_start_bit = 24 if payload.domain_is_long else 32
-
-    payload.server = bit_util.ba2int(bit_array[1:interval_start_bit])
-    payload.server_hex = hex(payload.server)
-    payload.interval = bit_util.ba2int(bit_array[interval_start_bit:49])
-    payload.query_flag = bool(bit_array[49])
-
-    return payload
-
-
-def get_cell_bytes_from_signal(signal: np.ndarray, starting_point):
+def get_cell_bytes_from_signal(signal: np.ndarray, starting_point, samples_per_symbol):
     data_cell = np.full(int(consts.sec_per_vp1_cell * consts.symbols_per_sec), False)
     for i in range(data_cell.shape[0]):
         data_cell[i] = signal[round(starting_point + i * samples_per_symbol)] > 0
@@ -80,8 +54,9 @@ def get_cell_bytes_from_signal(signal: np.ndarray, starting_point):
     return np.packbits(data_cell).tobytes()
 
 
-def get_autocorrelated_signal(signal: np.ndarray):
+def get_autocorrelated_signal(signal: np.ndarray, samplerate, samples_per_symbol):
     half_symbol = int(samples_per_symbol / 2)
+    offset_frames = round(samplerate * consts.offset_sec)
 
     df_first = pd.DataFrame(signal[:-offset_frames - half_symbol])
     df_first_2 = pd.DataFrame(signal[half_symbol:-offset_frames])
@@ -94,7 +69,8 @@ def get_autocorrelated_signal(signal: np.ndarray):
     return (rolling_corr_1 - rolling_corr_2).to_numpy()
 
 
-def get_best_starting_point(signal: np.ndarray):
+@njit
+def get_best_starting_point(signal: np.ndarray, samples_per_symbol):
     possible_starting_points = []
 
     # we don't need to search for it in the second half because there can't
@@ -111,7 +87,7 @@ def get_best_starting_point(signal: np.ndarray):
 
     if len(possible_starting_points) == 0:
         return None
-    mean = np.mean(possible_starting_points)
+    mean = np.mean(np.array(possible_starting_points))
 
     # avoid the case that the cell starts so late that it can't detect the entire thing
     if mean + samples_per_symbol * ((consts.symbols_per_sec * consts.sec_per_vp1_cell) - 1) + 1 >= signal.shape[0]:

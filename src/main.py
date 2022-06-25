@@ -1,8 +1,10 @@
-import ffmpeg
-import numpy as np
+import sys
 import time
 
-from audio_decoder import do_decoding
+import ffmpeg
+import numpy as np
+
+import audio_decoder
 
 # loosely based on https://kkroening.github.io/ffmpeg-python/
 
@@ -22,15 +24,19 @@ if __name__ == "__main__":
         .run_async(pipe_stdout=True)
     )
 
-    timee = time.time()
     while True:
+        timee = time.time()
         # maybe we should try to find some way to do this in a rolling fashion
         in_bytes = process1.stdout.read(samplerate * 2 * 3)
         if not in_bytes:
             break
-        do_decoding(np.frombuffer(in_bytes, dtype='<i2'))
+
+        try:
+            audio_payload = audio_decoder.decode(np.frombuffer(in_bytes, dtype='<i2'), samplerate)
+            print(audio_payload)
+        except Exception as err:
+            print(err, file=sys.stderr)
 
         print("time", time.time() - timee)
-        timee = time.time()
 
     process1.wait()
