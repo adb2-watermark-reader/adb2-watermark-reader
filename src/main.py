@@ -1,28 +1,35 @@
 import subprocess as sp
 import sys
 import threading
+from typing import IO
 
 import cv2
 import numpy as np
+import audio_spec_constants as consts
 
 import audio_decoder
 
 
-def audio(pipe):
+def audio(pipe: IO):
+    buffer = bytearray()
+
     while True:
-        in_bytes = pipe.read(samplerate * 2 * 3)
+        in_bytes = pipe.read(int(samplerate * consts.sec_per_vp1_cell * 2))  # 1 cell
 
         if not in_bytes:
             break
+        buffer.extend(in_bytes)
+
+        buffer = buffer[-int(samplerate * consts.sec_per_vp1_cell * 3 * 2):]  # 4.5 seconds or 3 cells
 
         try:
-            audio_payload = audio_decoder.decode(np.frombuffer(in_bytes, dtype='<i2'), samplerate)
+            audio_payload = audio_decoder.decode(np.frombuffer(buffer, dtype='<i2'), samplerate)
             print(audio_payload)
         except Exception as err:
             print(err, file=sys.stderr)
 
 
-def video(pipe):
+def video(pipe: IO):
     while True:
         in_bytes = pipe.read(video_resolution[0] * video_resolution[1] * 3)
 
@@ -55,8 +62,8 @@ if __name__ == "__main__":
         '-map 0:v -f:v rawvideo pipe:2 '  # rawvideo format is mapped to stderr pipe
         f'-acodec pcm_s16le -ar {samplerate} -ac 1 '  # Audio codec pcm_s16le (-ar 16k has no affect)
         '-map 0:a -f:a s16le pipe:1 '  # s16le audio format is mapped to stdout pipe
-        '-report',  # Create a log file (because we can't the statuses that are usually printed to stderr).
-        stdout=sp.PIPE, stderr=sp.PIPE)
+        # '-report'  # Create a log file (because we can't the statuses that are usually printed to stderr).
+        , stdout=sp.PIPE, stderr=sp.PIPE)
 
     threading.Thread(target=audio, args=(process.stdout,)).start()
     threading.Thread(target=video, args=(process.stderr,)).start()

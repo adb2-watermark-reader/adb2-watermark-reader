@@ -75,7 +75,8 @@ def get_best_starting_point(signal: np.ndarray, samples_per_symbol):
 
     # we don't need to search for it in the second half because there can't
     # be a full message (or only without padding)
-    for i in range(int(signal.shape[0] / 2 + samples_per_symbol)):
+    for i in range(int(signal.shape[0] - samples_per_symbol * (
+            consts.sec_per_vp1_cell * consts.symbols_per_sec - len(consts.message_header)))):
         is_correct = True
         for j in range(len(consts.message_header)):
             if not (signal[int(j * samples_per_symbol + i)] >= 0 and consts.message_header[j] == '1'
@@ -87,10 +88,10 @@ def get_best_starting_point(signal: np.ndarray, samples_per_symbol):
 
     if len(possible_starting_points) == 0:
         return None
-    mean = np.mean(np.array(possible_starting_points))
+    median = np.median(np.array(possible_starting_points))
 
     # avoid the case that the cell starts so late that it can't detect the entire thing
-    if mean + samples_per_symbol * ((consts.symbols_per_sec * consts.sec_per_vp1_cell) - 1) + 1 >= signal.shape[0]:
+    if median + samples_per_symbol * ((consts.symbols_per_sec * consts.sec_per_vp1_cell) - 1) + 1 >= signal.shape[0]:
         return None
 
-    return mean
+    return median
