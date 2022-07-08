@@ -1,16 +1,8 @@
 import subprocess as sp
-import sys
 import threading
-from tracemalloc import get_object_traceback
-from typing import IO
-
-import cv2
-import numpy as np
-import audio_spec_constants as consts
 
 import audio_decoder
 import video_decoder
-
 
 # pipes based on https://stackoverflow.com/a/71057629
 

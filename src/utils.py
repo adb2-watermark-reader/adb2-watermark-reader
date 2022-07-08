@@ -1,9 +1,9 @@
-from bitarray import bitarray
+import zlib
+
 import bitarray.util as bit_util
 import cv2 as cv
 import numpy as np
-import zlib
-import json
+from bitarray import bitarray
 
 
 #see Table 5.2 A/336

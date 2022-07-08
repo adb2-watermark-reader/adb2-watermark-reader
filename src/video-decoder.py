@@ -1,10 +1,10 @@
-from email import message
+import time
+
 import cv2 as cv
 import numpy as np
-from utils import reduce, disassemble_bitarray_into_components, check_crc, print_to_file
 from bitarray import bitarray
-import bitarray.util as bit_util
-import time
+
+from utils import reduce, disassemble_bitarray_into_components, check_crc, print_to_file
 
 WIDTH = 1280
 FRAMERATE = 50 # frames per second
