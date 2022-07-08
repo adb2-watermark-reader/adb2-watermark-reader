@@ -1,3 +1,6 @@
+import sys
+from typing import IO
+
 import cv2 as cv
 import numpy as np
 from utils import reduce, disassemble_bitarray_into_components, check_crc, print_to_file
@@ -14,6 +17,23 @@ FILE = 'video.ts'
 PARITY_WHITENING_SEQUENCE = 0b00111001110010100111100011110000011100101001100100011011110100100010011111000
 PAYLOAD_WHITENING_SEQUENCE = 0b11001001110100011101011100010010011001110101101100
 LUMA_THRESHOLD = 3
+
+
+def handle_video_pipe(pipe: IO, video_resolution):
+    while True:
+        in_bytes = pipe.read(video_resolution[0] * video_resolution[1] * 3)
+
+        if not in_bytes or len(in_bytes) < video_resolution[0] * video_resolution[1] * 3:
+            break
+
+        img = np.frombuffer(in_bytes, np.uint8).reshape((video_resolution[0], video_resolution[1], 3))
+
+        try:
+            video_payload = decode(img)
+            if video_payload:
+                print(video_payload)
+        except Exception as err:
+            print(err, file=sys.stderr)
 
 
 def find_run_in_pattern(resized, run_in_pattern = "eb52"):

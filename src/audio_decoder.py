@@ -1,13 +1,33 @@
-import time
+import sys
+from typing import IO
 
 import numpy as np
 import pandas as pd
 from bitarray import frozenbitarray, bitarray
+from numba import njit
 
 import audio_spec_constants as consts
 from math_utils import butter_bandpass_filter
 from vp1_payload import parse_payload, Payload
-from numba import njit
+
+
+def handle_audio_pipe(pipe: IO, samplerate: int):
+    buffer = bytearray()
+
+    while True:
+        in_bytes = pipe.read(int(samplerate * consts.sec_per_vp1_cell * 2))  # 1 cell
+
+        if not in_bytes:
+            break
+        buffer.extend(in_bytes)
+
+        buffer = buffer[-int(samplerate * consts.sec_per_vp1_cell * 3 * 2):]  # 4.5 seconds or 3 cells
+
+        try:
+            audio_payload = decode(np.frombuffer(buffer, dtype='<i2'), samplerate)
+            print(audio_payload)
+        except Exception as err:
+            print(err, file=sys.stderr)
 
 
 def decode(signal: np.ndarray, samplerate: int) -> Payload:
