@@ -3,12 +3,12 @@ from typing import IO
 
 import numpy as np
 import pandas as pd
-from bitarray import frozenbitarray, bitarray
+from bitarray import bitarray
 from numba import njit
 
-import audio_spec_constants as consts
+import spec_constants as consts
 from math_utils import butter_bandpass_filter
-from vp1_payload import parse_payload, Payload
+from vp1.vp1_message import Vp1Message
 
 
 def handle_audio_pipe(pipe: IO, samplerate: int):
@@ -25,12 +25,12 @@ def handle_audio_pipe(pipe: IO, samplerate: int):
 
         try:
             audio_payload = decode(np.frombuffer(buffer, dtype='<i2'), samplerate)
-            print(audio_payload)
+            print(f"audio {audio_payload.packet.vp1_payload}")
         except Exception as err:
             print(err, file=sys.stderr)
 
 
-def decode(signal: np.ndarray, samplerate: int) -> Payload:
+def decode(signal: np.ndarray, samplerate: int) -> Vp1Message:
     samples_per_symbol = samplerate / consts.symbols_per_sec
 
     signal = butter_bandpass_filter(signal, consts.butter_pass_lower, consts.butter_pass_higher, samplerate)
@@ -42,28 +42,14 @@ def decode(signal: np.ndarray, samplerate: int) -> Payload:
         raise ValueError("no audio watermark found")
 
     cell_bytes = get_cell_bytes_from_signal(signal, starting_point, samples_per_symbol)
+    cell_bits = bitarray()
+    cell_bits.frombytes(cell_bytes)
     if not cell_bytes.hex().startswith("ae0ab9e4"):
         raise AssertionError("watermark broke")
 
-    payload_bitarray, parity = get_payload_from_cell_bytes(cell_bytes)
-    payload = parse_payload(payload_bitarray)
+    vp1_message = Vp1Message(cell_bits)
 
-    return payload
-
-
-def get_payload_from_cell_bytes(data):
-    parity_whitening_sequence2 = frozenbitarray(consts.parity_whitening_sequence)
-    payload_whitening_sequence2 = frozenbitarray(consts.payload_whitening_sequence)
-
-    bits = bitarray()
-    bits.frombytes(data[4:])
-
-    parityy = bits[:-50 - 1]
-    payloadd = bits[-50 - 1:-1]
-    unscrambled_parity = parityy ^ parity_whitening_sequence2
-    unscrambled_payload = payloadd ^ payload_whitening_sequence2
-
-    return unscrambled_payload, unscrambled_parity
+    return vp1_message
 
 
 def get_cell_bytes_from_signal(signal: np.ndarray, starting_point, samples_per_symbol):
