@@ -59,6 +59,10 @@ class WatermarkMessage:
         wm_message_bytes_end = wm_message_bytes_start + remaining_bytes * 8
         self.bytes = bits[wm_message_bytes_start: wm_message_bytes_end]
 
+        assert len(self.bytes) == 168
+        assert self.fragment_number == 0
+        assert self.id == 0x7
+
         if is_last_fragment:
             self.message_crc_32 = bit_util.ba2int(bits[wm_message_bytes_end: wm_message_bytes_end + 32])
             self.crc_32 = bit_util.ba2int(bits[wm_message_bytes_end + 32: wm_message_bytes_end + 64])
@@ -66,11 +70,9 @@ class WatermarkMessage:
             self.crc_32 = bit_util.ba2int(bits[wm_message_bytes_end: wm_message_bytes_end + 32])
         self.entire_block = bits[16:wm_message_bytes_end]
 
-        # if len(self.bytes) != 168 and self.has_valid_crc:
-        #     raise ValueError(f"length {len(self.bytes)}, not 168 {self}")
+        assert self.has_valid_crc
 
-        if self.id == 0x7 and self.has_valid_crc and len(self.bytes) == 168:
-            self.extended_vp1_message = ExtendedVp1Message(self.bytes)
+        self.extended_vp1_message = ExtendedVp1Message(self.bytes)
 
     @property
     def has_valid_crc(self):

@@ -8,13 +8,15 @@ import video_decoder
 
 if __name__ == "__main__":
     # in_filename = "rtsp://localhost/live"
-    in_filename = "tcp://localhost:1234"
+    # in_filename = "tcp://localhost:1234"
     # in_filename = "https://f111.rndfnk.com/ard/wdr/1live/diggi/mp3/128/stream.mp3?sid=2B1eCeSmJXOZEEiPpOnnykFYHP4&token=pGly4HjCjIPjybbqtozZnU3Oh1m-eP9YiXr5ya-83LI&tvf=zRZyqral-xZmMTExLnJuZGZuay5jb20"
-    # in_filename = "video.ts"
+    in_filename = "../sample_videos/sample_1.ts"
 
     samplerate = 48000
     video_resolution = (720, 1280)
     # video_resolution = (1080, 1920)
+    framerate = 50
+    # framerate = 60
 
     process = sp.Popen(
         'ffmpeg -hide_banner -loglevel panic '  # Set loglevel to error for disabling the prints ot stderr
@@ -28,4 +30,4 @@ if __name__ == "__main__":
         , stdout=sp.PIPE, stderr=sp.PIPE, shell=True)
 
     threading.Thread(target=audio_decoder.handle_audio_pipe, args=(process.stdout, samplerate)).start()
-    threading.Thread(target=video_decoder.handle_video_pipe, args=(process.stderr, video_resolution)).start()
+    threading.Thread(target=video_decoder.handle_video_pipe, args=(process.stderr, video_resolution, framerate)).start()

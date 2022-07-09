@@ -8,11 +8,15 @@ from numba import njit
 
 import spec_constants as consts
 from math_utils import butter_bandpass_filter
+from utils import stringify_success
 from vp1.vp1_message import Vp1Message
 
 
 def handle_audio_pipe(pipe: IO, samplerate: int):
     buffer = bytearray()
+
+    success_count = 0
+    error_count = 0
 
     while True:
         in_bytes = pipe.read(int(samplerate * consts.sec_per_vp1_cell * 2))  # 1 cell
@@ -25,9 +29,15 @@ def handle_audio_pipe(pipe: IO, samplerate: int):
 
         try:
             audio_payload = decode(np.frombuffer(buffer, dtype='<i2'), samplerate)
-            print(f"audio {audio_payload.packet.vp1_payload}")
+
+            success_count += 1
+
+            print(f"audio {stringify_success(success_count, error_count)}    {audio_payload.packet.vp1_payload}")
         except Exception as err:
-            print(err, file=sys.stderr)
+
+            error_count += 1
+
+            print(f"audio {stringify_success(success_count, error_count)}    {err}", file=sys.stderr)
 
 
 def decode(signal: np.ndarray, samplerate: int) -> Vp1Message:
