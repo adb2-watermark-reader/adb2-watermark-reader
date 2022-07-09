@@ -1,4 +1,5 @@
 import zlib
+from dataclasses import dataclass
 
 import bitarray.util as bit_util
 from bitarray import bitarray
@@ -6,6 +7,7 @@ from bitarray import bitarray
 from vp1.extended_vp1_message import ExtendedVp1Message
 
 
+@dataclass
 class WatermarkMessage:
     run_in_pattern: bitarray
     id: int
@@ -17,12 +19,6 @@ class WatermarkMessage:
     crc_32: int
     entire_block: bitarray
     extended_vp1_message: ExtendedVp1Message
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def __repr__(self):
-        return self.__str__()
 
     def __init__(self, bits: bitarray):
         """

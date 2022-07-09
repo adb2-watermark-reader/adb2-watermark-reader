@@ -1,18 +1,15 @@
+from dataclasses import dataclass
+
 from bitarray import bitarray, frozenbitarray
 
-from vp1.vp1_payload import Vp1Payload
 import spec_constants as consts
+from vp1.vp1_payload import Vp1Payload
 
 
+@dataclass
 class Vp1Packet:
     parity: bitarray
     vp1_payload: Vp1Payload
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def __repr__(self):
-        return self.__str__()
 
     def __init__(self, bits: bitarray, alternate_scramble=False):
         """
