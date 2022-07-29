@@ -7,8 +7,7 @@ from bitarray import bitarray
 from numba import njit
 
 import spec_constants as consts
-from math_utils import butter_bandpass_filter
-from utils import stringify_success
+from utils import butter_bandpass_filter, stringify_success
 from vp1.vp1_message import Vp1Message
 
 

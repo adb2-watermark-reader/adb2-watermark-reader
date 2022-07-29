@@ -1,6 +1,4 @@
 import sys
-import time
-import traceback
 from typing import IO
 
 import cv2 as cv

@@ -9,7 +9,6 @@ import video_decoder
 if __name__ == "__main__":
     # in_filename = "rtsp://localhost/live"
     # in_filename = "tcp://localhost:1234"
-    # in_filename = "https://f111.rndfnk.com/ard/wdr/1live/diggi/mp3/128/stream.mp3?sid=2B1eCeSmJXOZEEiPpOnnykFYHP4&token=pGly4HjCjIPjybbqtozZnU3Oh1m-eP9YiXr5ya-83LI&tvf=zRZyqral-xZmMTExLnJuZGZuay5jb20"
     in_filename = "../sample_videos/sample_1.ts"
 
     samplerate = 48000

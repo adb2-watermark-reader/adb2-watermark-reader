@@ -1,46 +1,20 @@
-import cv2 as cv
-import numpy as np
-from bitarray import bitarray
+from scipy.signal import butter, lfilter
 
 
 def stringify_success(success_count, error_count):
     return f"{success_count} / {success_count + error_count} = {((success_count / (success_count + error_count)) * 100):.2f}%"
 
 
-def gammaCorrection(src, gamma):
-    invGamma = 1 / gamma
-
-    table = [((i / 255) ** invGamma) * 255 for i in range(256)]
-    table = np.array(table, np.uint8)
-
-    return cv.LUT(src, table)
-
-
-def reduce(bins, resized):
-    """
-    returns bins with the reduced resized array added to it
-    """
-    for i in range(len(bins)):
-        bins[i] += (resized == i).sum()
-    return bins
+# https://scipy-cookbook.readthedocs.io/items/ButterworthBandpass.html
+def butter_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype='band')
+    return b, a
 
 
-def number_of_different_bits(bit_array: bitarray, reference: bitarray) -> int:
-    return abs(bit_array.count(True), reference.count(True))
-
-
-def print_to_file(messages: list):
-    with open("messages.json", "w") as f:
-        f.write('[')
-        for dictionary, i in zip(messages, range(len(messages))):
-            f.write('{')
-            j = 0
-            for key, value in dictionary.items():
-                f.write('"%s":"%s"\n' % (key, str(value)))
-                j += 1
-                if j < len(dictionary.items()):
-                    f.write(',')
-            f.write('}')
-            if i < len(messages) - 1:
-                f.write(',')
-        f.write(']')
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
