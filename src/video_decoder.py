@@ -10,6 +10,11 @@ from watermark_message import WatermarkMessage
 
 
 def handle_video_pipe(pipe: IO, video_resolution, framerate):
+    """Generates the video watermark messages and prints them to the console. 
+
+    Args:
+        pipe (IO): input pipe for audio stream (stderr usually)
+    """
     frame_count = 0
     last_wm: WatermarkMessage = None
     last_wm_frame = 0

@@ -12,6 +12,12 @@ from vp1.vp1_message import Vp1Message
 
 
 def handle_audio_pipe(pipe: IO, samplerate: int):
+    """ Generates the audio watermark messages and prints them to the console. 
+
+    Args:
+        pipe (IO): input pipe for audio stream (stdout usually)
+        samplerate (int): samplerate in Hz
+    """
     buffer = bytearray()
 
     success_count = 0
@@ -40,6 +46,19 @@ def handle_audio_pipe(pipe: IO, samplerate: int):
 
 
 def decode(signal: np.ndarray, samplerate: int) -> Vp1Message:
+    """ Decodes the buffered audio input into a Vp1Message watermark message if possible.
+
+    Args:
+        signal (np.ndarray): the buffered audio signal
+        samplerate (int): samplerate in Hz
+
+    Raises:
+        ValueError: When :py:meth:`get_best_starting_point` is not able to find a full message.
+        AssertionError: the generated bitarray does not contain the run_in_pattern
+
+    Returns:
+        Vp1Message: _description_
+    """
     samples_per_symbol = samplerate / consts.symbols_per_sec
 
     signal = butter_bandpass_filter(signal, consts.butter_pass_lower, consts.butter_pass_higher, samplerate)
